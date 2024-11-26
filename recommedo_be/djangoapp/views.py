@@ -1,7 +1,11 @@
 
+import json
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from djangoapp.rec_book import get_recommendations
+from djangoapp.rec_songs import recommender
+
 
 
 def home(request):
@@ -29,5 +33,34 @@ def get_book_recommendations(request):
         print(f"Error: {e}")
         return JsonResponse({"error": "An unexpected error occurred"}, status=500)
 
-    
 
+
+@csrf_exempt  # Temporarily bypass CSRF for testing, remove for production
+def get_song_recommendations(request):
+    try:
+        # Get the song name and number of recommendations from the GET request
+        song_name = request.GET.get('song_name')
+        num_recommendations = request.GET.get('number_songs', 5)  # Default to 5 if not provided
+
+        if not song_name:
+            return JsonResponse({"error": "Missing song name"}, status=400)
+
+        # Convert num_recommendations to an integer if it's provided
+        try:
+            num_recommendations = int(num_recommendations)
+        except ValueError:
+            return JsonResponse({"error": "Invalid number of recommendations"}, status=400)
+
+        # Get recommendations using the recommender function
+        recommendations = recommender.recommend(song_name, 4)
+
+        # If recommendations are empty, return a proper message
+        if not recommendations:
+            return JsonResponse({"error": "No recommendations found for the song"}, status=404)
+
+        return JsonResponse({"recommendations": recommendations}, safe=False)
+
+    except Exception as e:
+        # Log the error and return a proper JSON error
+        print(f"Error: {e}")
+        return JsonResponse({"error": "An unexpected error occurred"}, status=500)
