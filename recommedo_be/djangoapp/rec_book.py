@@ -26,7 +26,7 @@ def get_recommendations(book_title, genre, num_recommendations=4):
     df['Title_Lower'] = df['Title'].str.lower()
 
     if book_title not in df['Title_Lower'].values:
-        file_path = os.path.join(DATA_DIR, 'relevant_data.csv')
+        file_path = os.path.join(DATA_DIR, 'Books_books_cleaned.csv')
 
         dff = pd.read_csv(file_path)
 
@@ -37,7 +37,7 @@ def get_recommendations(book_title, genre, num_recommendations=4):
         tfidf_vectorizer = TfidfVectorizer()
         tfidf_matrix = tfidf_vectorizer.fit_transform(dff['Processed_Text'])
         cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
-        entered_title_vec = tfidf_vectorizer.transform([book_title.lower().join(genre)])
+        entered_title_vec = tfidf_vectorizer.transform([book_title.lower()+" "+genre])
         similarity_scores = cosine_similarity(entered_title_vec, tfidf_matrix).flatten()
         
         # Get the most similar books based on cosine similarity
