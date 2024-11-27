@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import RecommendationsPage from "./components/RecommendationsPage";
-import FeedbackPage from "./components/FeedbackPage"; // Import FeedbackPage
 import AboutPage from "./components/AboutPage"; // Import AboutPage
 import ContactPage from "./components/ContactPage"; // Import ContactPage
 import BooksPage from "./components/BooksPage"; 
@@ -19,7 +18,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Hero />} />
           <Route path="/recommendations" element={<RecommendationsPage />} />
-          <Route path="/feedback" element={<FeedbackPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/books" element={<BooksPage />} />

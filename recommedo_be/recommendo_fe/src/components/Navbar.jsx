@@ -18,9 +18,7 @@ const Navbar = () => {
         <li className="p-4 cursor-pointer">
           <Link to="/">Home</Link>
         </li>
-        <li className="p-4">
-          <Link to="/feedback">Feedback</Link>
-        </li>
+        
         <li className="p-4">
           <Link to="/about">About</Link>
         </li>
