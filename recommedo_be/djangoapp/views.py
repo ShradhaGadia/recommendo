@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from djangoapp.rec_book import get_recommendations
 from djangoapp.rec_songs import recommender
+from djangoapp.rec_movies import get_movies
 
 
 
@@ -62,5 +63,30 @@ def get_song_recommendations(request):
 
     except Exception as e:
         # Log the error and return a proper JSON error
+        print(f"Error: {e}")
+        return JsonResponse({"error": "An unexpected error occurred"}, status=500)
+    
+
+def get_movie_recommendations(request):
+    try:
+        # Get the movie name from the request
+        movieName = request.GET.get('movie_name')
+
+        # Check if movie name is provided
+        if not movieName:
+            return JsonResponse({"error": "Missing movie name"}, status=400)
+        
+        # Fetch recommendations
+        recommendations = get_movies(movieName)
+
+        # If recommendations are empty, return a proper message
+        if not recommendations:
+            return JsonResponse({"error": "No recommendations found for the movie"}, status=404)
+
+        # Return recommendations as JSON
+        return JsonResponse({"recommendations": recommendations})
+        
+    except Exception as e:
+        # Log the error and return a proper JSON error response
         print(f"Error: {e}")
         return JsonResponse({"error": "An unexpected error occurred"}, status=500)
