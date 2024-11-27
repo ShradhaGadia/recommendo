@@ -9,6 +9,7 @@ import ContactPage from "./components/ContactPage"; // Import ContactPage
 import BooksPage from "./components/BooksPage"; 
 import SongsPage from "./components/SongsPage";
 import MoviesPage from "./components/MoviesPage";
+import PodcastPage from "./components/PodcastPage";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/books" element={<BooksPage />} />
           <Route path="/movies" element={<MoviesPage />} />
           <Route path="/songs" element={<SongsPage />} />
+          <Route path="/podcasts" element={<PodcastPage />} />
         </Routes>
       </div>
     </Router>

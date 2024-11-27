@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from djangoapp.rec_book import get_recommendations
 from djangoapp.rec_songs import recommender
 from djangoapp.rec_movies import get_movies
+from djangoapp.rec_podcast import get_podcasts
 
 
 
@@ -88,5 +89,26 @@ def get_movie_recommendations(request):
         
     except Exception as e:
         # Log the error and return a proper JSON error response
+        print(f"Error: {e}")
+        return JsonResponse({"error": "An unexpected error occurred"}, status=500)
+    
+    
+def get_podcast_recommendations(request):
+    try:
+        podName=request.GET.get('podcast_name')
+        if not podName:
+            return JsonResponse({"error": "Missing podcast name"}, status=400)
+        
+        # Fetch recommendations
+        recommendations = get_podcasts(podName)
+
+        # If recommendations are empty, return a proper message
+        if not recommendations:
+            return JsonResponse({"error": "No recommendations found for the podcast"}, status=404)
+
+        # Return recommendations as JSON
+        return JsonResponse({"recommendations": recommendations})
+
+    except Exception as e:
         print(f"Error: {e}")
         return JsonResponse({"error": "An unexpected error occurred"}, status=500)
